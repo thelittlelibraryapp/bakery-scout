@@ -1,4 +1,4 @@
-import { Bakery, BakeryWithAverage } from '../types/bakery';
+import type { Bakery, BakeryWithAverage } from '../types/bakery';
 
 /**
  * Calculate the average score for a bakery across all scoring criteria
