@@ -80,6 +80,20 @@ npm run preview
 npm run lint
 ```
 
+## Deployment
+
+This app is configured for easy deployment to Netlify with automatic deployments from GitHub.
+
+See [NETLIFY.md](./NETLIFY.md) for detailed deployment instructions.
+
+**Quick steps:**
+1. Push your code to GitHub
+2. Connect repository to Netlify
+3. Add environment variables (Supabase URL and key)
+4. Deploy!
+
+Every push to your branch will automatically deploy to Netlify.
+
 ## License
 
 MIT

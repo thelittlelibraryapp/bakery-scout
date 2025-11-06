@@ -23,18 +23,32 @@ function App() {
   const fetchBakeries = async () => {
     try {
       setIsLoading(true);
+      console.log('Fetching bakeries from Supabase...');
       const { data, error } = await supabase
         .from('bakeries')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+        });
+        throw error;
+      }
 
+      console.log('Fetched bakeries:', data);
       const bakeriesWithScores = addAverageScores(data || []);
       setBakeries(bakeriesWithScores);
     } catch (error) {
       console.error('Error fetching bakeries:', error);
-      alert('Failed to load bakeries. Check console for details.');
+      if (error instanceof Error) {
+        alert(`Failed to load bakeries: ${error.message}`);
+      } else {
+        alert('Failed to load bakeries. Check console for details.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -43,16 +57,29 @@ function App() {
   const handleAdd = async (data: BakeryInput) => {
     try {
       setIsSaving(true);
+      console.log('Adding bakery:', data);
       const { error } = await supabase.from('bakeries').insert([data]);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase insert error:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+        });
+        throw error;
+      }
 
       await fetchBakeries();
       setCurrentView('list');
       alert('Bakery added successfully!');
     } catch (error) {
       console.error('Error adding bakery:', error);
-      alert('Failed to add bakery. Check console for details.');
+      if (error instanceof Error) {
+        alert(`Failed to add bakery: ${error.message}`);
+      } else {
+        alert('Failed to add bakery. Check console for details.');
+      }
     } finally {
       setIsSaving(false);
     }
